@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>LifeArchive - Connexion</title>
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+<div class="container">
+    <div class="logo">
+        <div class="logo-icon">📁</div>
+    </div>
+    <h1>LifeArchive</h1>
+    <p class="subtitle">Gérez vos documents importants en toute sécurité</p>
+
+    <div class="tabs">
+        <div class="tab active" onclick="afficherTab('login', event)">Connexion</div>
+        <div class="tab" onclick="afficherTab('register', event)">Inscription</div>
+    </div>
+
+    <div class="form active" id="login">
+        <div class="input-group">
+            <span>✉️</span>
+            <input type="email" id="login-email" placeholder="Adresse email" />
+        </div>
+        <div class="input-group">
+            <span>🔒</span>
+            <input type="password" id="login-password" placeholder="Mot de passe" />
+        </div>
+        <button onclick="seConnecter()">Se connecter</button>
+    </div>
+
+    <div class="form" id="register">
+        <div class="input-group">
+            <span>👤</span>
+            <input type="text" id="reg-nom" placeholder="Nom complet" />
+        </div>
+        <div class="input-group">
+            <span>✉️</span>
+            <input type="email" id="reg-email" placeholder="Adresse email" />
+        </div>
+        <div class="input-group">
+            <span>📅</span>
+            <input type="date" id="reg-ddn" />
+        </div>
+        <div class="input-group">
+            <span>📱</span>
+            <input type="tel" id="reg-tel" placeholder="Numéro de téléphone" />
+        </div>
+        <div class="input-group">
+            <span>🔒</span>
+            <input type="password" id="reg-password" placeholder="Mot de passe" />
+        </div>
+        <div class="input-group">
+            <span>🔒</span>
+            <input type="password" id="reg-password2" placeholder="Confirmer le mot de passe" />
+        </div>
+        <button onclick="sInscrire()">Créer mon compte</button>
+    </div>
+
+<script src="js/auth.js"></script>
+</body>
+</html>

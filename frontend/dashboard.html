@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>LifeArchive - Dashboard</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="css/dashboard.css">
+</head>
+<body class="dashboard-body">
+
+    <header>
+        <h1> LifeArchive</h1>
+        <div class="header-right">
+            <span id="nom-utilisateur"></span>
+            <button class="btn-deconnexion" onclick="seDeconnecter()">🚪 Déconnexion</button>
+        </div>
+    </header>
+
+    <main>
+       
+        <section class="card">
+            <h2>➕ Ajouter un document</h2>
+            <div class="form-grid">
+                <input type="text" id="doc-nom" placeholder="Nom du document" />
+                <input type="text" id="doc-description" placeholder="Description (optionnel)" />
+                <select id="doc-categorie">
+                    <option value="">-- Catégorie --</option>
+                </select>
+                <input type="file" id="doc-fichier" />
+            </div>
+            <button class="btn-ajouter" onclick="ajouterDocument()">➕ Ajouter</button>
+            <p class="message" id="message-doc"></p>
+        </section>
+
+       
+        <section class="card">
+            <div class="filtres">
+                <input type="text" id="recherche" placeholder="🔍 Rechercher..." oninput="filtrer()" />
+                <select id="filtre-categorie" onchange="filtrer()">
+                    <option value="">Toutes les catégories</option>
+                </select>
+                <select id="tri" onchange="filtrer()">
+                    <option value="recent">Plus récent</option>
+                    <option value="ancien">Plus ancien</option>
+                    <option value="nom">Nom A-Z</option>
+                </select>
+            </div>
+        </section>
+
+        <section class="card">
+            <h2> Mes documents</h2>
+            <div id="liste-documents"></div>
+        </section>
+    </main>
+
+    
+    <div id="modal" class="modal" onclick="fermerModal()">
+        <div class="modal-content" onclick="event.stopPropagation()">
+            <button class="modal-fermer" onclick="fermerModal()">✕</button>
+            <h3 id="modal-titre"></h3>
+            <div id="modal-body"></div>
+        </div>
+    </div>
+
+    <script src="js/dashboard.js"></script>
+</body>
+</html>
