@@ -57,13 +57,13 @@ function filtrer() {
 
 
 function getIcone(path) {
-    if (!path) return '📄';
+    if (!path) return '';
     const ext = path.split('.').pop().toLowerCase();
-    if (['jpg','jpeg','png','gif','webp'].includes(ext)) return '🖼️';
-    if (ext === 'pdf') return '📕';
-    if (['doc','docx'].includes(ext)) return '📝';
-    if (['xls','xlsx'].includes(ext)) return '📊';
-    return '📄';
+    if (['jpg','jpeg','png','gif','webp'].includes(ext)) return '';
+    if (ext === 'pdf') return '';
+    if (['doc','docx'].includes(ext)) return '';
+    if (['xls','xlsx'].includes(ext)) return '';
+    return '';
 }
 
 
@@ -96,7 +96,7 @@ function previsualiser(id) {
     const doc = tousLesDocuments.find(d => d.id === id);
     if (!doc) return;
 
-    document.getElementById('modal-titre').textContent = '📄 ' + doc.nom;
+    document.getElementById('modal-titre').textContent = ' ' + doc.nom;
     const body = document.getElementById('modal-body');
     const ext = doc.fichier_path.split('.').pop().toLowerCase();
     const url = 'http://localhost:3000/' + doc.fichier_path;
@@ -108,10 +108,10 @@ function previsualiser(id) {
     } else {
         body.innerHTML = `
             <div class="modal-info">
-                <p><strong>📄 Nom :</strong> ${doc.nom}</p>
-                <p><strong>📁 Catégorie :</strong> ${doc.categorie || 'Sans catégorie'}</p>
-                <p><strong>📅 Date :</strong> ${new Date(doc.date_upload).toLocaleDateString('fr-FR')}</p>
-                <p><strong>📝 Description :</strong> ${doc.description || 'Aucune'}</p>
+                <p><strong> Nom :</strong> ${doc.nom}</p>
+                <p><strong> Catégorie :</strong> ${doc.categorie || 'Sans catégorie'}</p>
+                <p><strong> Date :</strong> ${new Date(doc.date_upload).toLocaleDateString('fr-FR')}</p>
+                <p><strong> Description :</strong> ${doc.description || 'Aucune'}</p>
                 <br>
                 <a href="${url}" download><button>⬇️ Télécharger</button></a>
             </div>`;
