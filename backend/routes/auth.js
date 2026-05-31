@@ -41,4 +41,33 @@ router.post('/login', async (req, res) => {
     }
 });
 
+router.post('/register', async (req, res) => {
+    try {
+        const { email, password } = req.body;
+
+        const [existing] = await db.query(
+            'SELECT * FROM users WHERE email = ?',
+            [email]
+        );
+
+        if (existing.length > 0) {
+            return res.status(400).json({ erreur: 'Email déjà utilisé' });
+        }
+
+        const hash = await bcrypt.hash(password, 10);
+
+        await db.query(
+            'INSERT INTO users (email, password) VALUES (?, ?)',
+            [email, hash]
+        );
+
+        res.json({ message: 'Compte créé avec succès' });
+
+    } catch (err) {
+        console.error("ERREUR REGISTER :", err);
+        res.status(500).json({ erreur: err.message });
+    }
+});
+
+
 module.exports = router;
