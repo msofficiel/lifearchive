@@ -132,7 +132,7 @@ h1 {
 
 input {
     width: 100%;
-    padding: 13px 13px 13px 42px;
+    padding: 13px 13px 13px 13px;
     border: 1.5px solid #e0e0e0;
     border-radius: 10px;
     font-size: 14px;
