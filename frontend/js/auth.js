@@ -1,71 +1,67 @@
-const express = require('express');
-const router = express.Router();
-const bcrypt = require('bcrypt');
-const jwt = require('jsonwebtoken');
-const db = require('../config/db');
+function afficherTab(tab, event) {
+    document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+    document.querySelectorAll('.form').forEach(f => f.classList.remove('active'));
+    document.getElementById(tab).classList.add('active');
+    event.target.classList.add('active');
+}
 
-router.post('/register', async (req, res) => {
-    try {
-        const { nom, email, mot_de_passe, ddn, tel } = req.body;
+async function seConnecter() {
+    const email = document.getElementById('login-email').value;
+    const password = document.getElementById('login-password').value;
 
-        const [existing] = await db.query(
-            'SELECT * FROM users WHERE email = ?',
-            [email]
-        );
-
-        if (existing.length > 0) {
-            return res.status(400).json({ erreur: 'Email déjà utilisé' });
-        }
-
-        const hash = await bcrypt.hash(mot_de_passe, 10);
-
-        await db.query(
-            'INSERT INTO users (email, password) VALUES (?, ?)',
-            [email, hash]
-        );
-
-        res.json({ message: 'Compte créé avec succès' });
-
-    } catch (err) {
-        console.error("ERREUR REGISTER :", err);
-        res.status(500).json({ erreur: err.message });
+    if (!email || !password) {
+        alert("Remplis tous les champs !");
+        return;
     }
-});
 
-router.post('/login', async (req, res) => {
     try {
-        const { email, mot_de_passe } = req.body;
-
-        const [results] = await db.query(
-            'SELECT * FROM users WHERE email = ?',
-            [email]
-        );
-
-        if (results.length === 0) {
-            return res.status(401).json({ erreur: 'Utilisateur introuvable' });
+        const res = await fetch('/api/auth/login', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ email, mot_de_passe: password })
+        });
+        const data = await res.json();
+        if (data.token) {
+            localStorage.setItem('token', data.token);
+            window.location.href = "dashboard.html";
+        } else {
+            alert(data.erreur || "Email ou mot de passe incorrect");
         }
-
-        const valide = await bcrypt.compare(
-            mot_de_passe,
-            results[0].password
-        );
-
-        if (!valide) {
-            return res.status(401).json({ erreur: 'Mot de passe incorrect' });
-        }
-
-        const token = jwt.sign(
-            { id: results[0].id },
-            process.env.JWT_SECRET || 'secret_lifearchive',
-            { expiresIn: '24h' }
-        );
-
-        res.json({ token, nom: results[0].nom || '' });
-
-    } catch (err) {
-        console.error("ERREUR LOGIN :", err);
-        res.status(500).json({ erreur: err.message });
+    } catch (error) {
+        alert("Erreur serveur");
     }
-});
+}
 
-module.exports = router;
+async function sInscrire() {
+    const nom = document.getElementById('reg-nom').value;
+    const email = document.getElementById('reg-email').value;
+    const ddn = document.getElementById('reg-ddn').value;
+    const tel = document.getElementById('reg-tel').value;
+    const password = document.getElementById('reg-password').value;
+    const password2 = document.getElementById('reg-password2').value;
+
+    if (!nom || !email || !password || !ddn) {
+        alert("Remplis tous les champs !");
+        return;
+    }
+    if (password !== password2) {
+        alert("Les mots de passe ne correspondent pas !");
+        return;
+    }
+
+    try {
+        const res = await fetch('/api/auth/register', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ nom, email, mot_de_passe: password, ddn, tel })
+        });
+        const data = await res.json();
+        if (data.message) {
+            alert("Compte créé ! Tu peux te connecter.");
+        } else {
+            alert(data.erreur || "Erreur inscription");
+        }
+    } catch (error) {
+        alert("Erreur serveur");
+    }
+}
